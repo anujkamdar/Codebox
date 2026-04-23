@@ -11,11 +11,12 @@ function App() {
   const [code, setCode] = useState("");
   const [input, setInput] = useState(""); 
   const [output, setOutput] = useState("");
+  const apiBaseUrl = `http://${window.location.hostname}:5000`;
 
   const submitCode = async () => {
     console.log("In queue");
     try {
-      const response = await axios.post('http://localhost:5000/submit', {
+      const response = await axios.post(`${apiBaseUrl}/submit`, {
         input: input,
         code: code,
         language: "cpp",
@@ -39,13 +40,13 @@ function App() {
     />
 
     <div>
-      <h3 className="bg-amber-800">Input:</h3>
+      <h3 className="text-5xl">Input:</h3>
       <textarea value={input} onChange={(e) => setInput(e.target.value)} />
-      <h3>Output:</h3>
+      <h3 className="text-5xl">Output:</h3>
       <pre>{output}</pre>
     </div>
 
-    <button className="btn btn-primary" onClick={submitCode}>Submit</button>
+    <button className="bg-amber-500 border-4" onClick={submitCode}>Submit</button>
   </>
 }
 
