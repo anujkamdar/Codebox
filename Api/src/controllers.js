@@ -1,11 +1,11 @@
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
 import { asyncHandler } from "./utils/asynchandler.js";
-
 import crypto from "crypto";
 
+
 const submitCode = asyncHandler(async (req, res) => {
-  const { language, code, input = "" } = req.body;
+  const { language, code, input = ""} = req.body;
 
   if (!language) {
     throw new ApiError(400, "Language is required");
@@ -29,11 +29,12 @@ const submitCode = asyncHandler(async (req, res) => {
 
     const result = await workerResponse.json();
     console.log(`[API] Job ${jobId} finished.`);
-    return res.status(200).json(new ApiResponse(200, result, "Execution successful"));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, result, "Execution successful"));
   } catch (error) {
     throw new ApiError(500, "Execution Engine is currently unavailable.");
   }
 });
-
 
 export { submitCode };
