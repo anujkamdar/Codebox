@@ -64,7 +64,7 @@ function MainPage() {
     const yDocRef = useRef(null);
     const yTextRef = useRef(null);
     const bindingRef = useRef(null);
-    const apiBaseUrl = `http://${window.location.hostname}:5000`;
+    const apiBaseUrl = `https://api.compilebox.me`;
 
     const socket = useMemo(() => {
         return io(apiBaseUrl, {

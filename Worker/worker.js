@@ -27,5 +27,5 @@ app.post('/execute', async (req, res) => {
 });
 
 app.listen(4000, () => {
-    console.log('Internal Execution Worker listening on http://localhost:4000');
+    console.log('Internal Execution Worker listening');
 });

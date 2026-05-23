@@ -8,14 +8,21 @@ import { ApiError } from "./utils/ApiError.js";
 const app = express();
 const server = createServer(app);
 
+const allowedOrigins = ["http://localhost:5173","https://compilebox.me","https://www.compilebox.me"];
+
 export const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: allowedOrigins,
+    credentials: true,
   },
 });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}
+));
 
 app.use("", routes);
 
@@ -67,9 +74,6 @@ io.on("connection", (socket) => {
             console.log(`User ${userData.userName} left room: ${userData.roomId}`);
             console.log(`Current clients in room ${userData.roomId}:`, remainingClients);
         }
-
-        socket.on
-
     });
 
     socket.on("request-sync",({roomId}) => {
@@ -105,5 +109,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(3000, () => {
-  console.log("API & WebSocket Server running on http://localhost:3000");
+  console.log("API & WebSocket Server running");
 });

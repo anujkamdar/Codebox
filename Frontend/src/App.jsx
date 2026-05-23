@@ -11,7 +11,7 @@ function App() {
   const [code, setCode] = useState("");
   const [input, setInput] = useState(""); 
   const [output, setOutput] = useState("");
-  const apiBaseUrl = `http://${window.location.hostname}:5000`;
+  const apiBaseUrl = `https://api.compilebox.me`;
 
   const submitCode = async () => {
     console.log("In queue");
