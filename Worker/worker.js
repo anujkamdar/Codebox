@@ -7,9 +7,7 @@ app.use(express.json());
 
 app.post('/execute', async (req, res) => {
     const { jobId, language, code, input } = req.body;
-    
     console.log(`\n[Worker] Executing Job: ${jobId}`);
-
     try {
         if (language === 'cpp') {
             const result = await executeCpp(jobId, code, input);
