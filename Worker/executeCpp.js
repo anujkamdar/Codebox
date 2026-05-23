@@ -1,42 +1,74 @@
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
-import { fileURLToPath } from 'url';
 
-// Recreating __dirname because it does not exist in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-// --------------------------------
+const TEMP_DIR = '/tmp/coderunner';
+const TIME_LIMIT = 5;
+const MEMORY_LIMIT = '128m';
 
-export const executeCpp = (jobId, code, input = "") => {
-    return new Promise((resolve, reject) => {
-        const tempDir = path.join(__dirname, 'temp');
-        
-        // Ensure temp directory exists
-        if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+export async function executeCpp(jobId, code, input = '') {
+    const jobDir = path.join(TEMP_DIR, jobId);
 
-        const filePath = path.join(tempDir, `${jobId}.cpp`);
-        const inputPath = path.join(tempDir, `${jobId}.txt`);
-        const outPath = `${jobId}.out`;
+    fs.mkdirSync(jobDir, { recursive: true });
+    fs.writeFileSync(path.join(jobDir, 'main.cpp'), code);
+    fs.writeFileSync(path.join(jobDir, 'input.txt'), input);
 
-        fs.writeFileSync(filePath, code);
-        fs.writeFileSync(inputPath, input);
+    try {
+        return await runInDocker(jobId, jobDir);
+    } finally {
+        fs.rmSync(jobDir, { recursive: true, force: true });
+    }
+}
 
-        const dockerCmd = `docker run --rm --memory="256m" -v "${tempDir}":/app -w /app gcc:latest sh -c "g++ ${jobId}.cpp -o ${outPath} && ./${outPath} < ${jobId}.txt"`;
+function runInDocker(jobId, jobDir) {
+    return new Promise((resolve) => {
+        const startTime = Date.now();
+        const proc = spawn('docker', [
+            'run', '--rm',
+            '--name', `cpp-${jobId}`,
+            '--network', 'none',
+            '--memory', MEMORY_LIMIT,
+            '--cpus', '0.5',
+            '--tmpfs', '/tmp:rw,nosuid,exec,size=64m', // Added 'exec' here
+            '--ulimit', 'nproc=50:50',
+            '--ulimit', 'fsize=10000000',
+            '-v', `${jobDir}:/code:ro`,
+            'gcc:14',
+            '/bin/sh', '-c',
+            `g++ -O2 -o /tmp/main /code/main.cpp 2>/tmp/ce.txt \
+            && timeout ${TIME_LIMIT} /tmp/main < /code/input.txt \
+            || (cat /tmp/ce.txt >&2 && exit 1)`,
+        ]);
 
-        console.log(`[Executing Docker]: ${dockerCmd}`);
+        let stdout = '';
+        let stderr = '';
 
-        exec(dockerCmd, { timeout: 15000 }, (error, stdout, stderr) => {
-            // Cleanup physical files
-            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+        proc.stdout.on('data', (d) => {
+            stdout += d.toString();
+            if (stdout.length > 100_000) proc.kill();
+        });
 
-            if (error) {
-                if (error.killed) return resolve({ status: "error", output: "Time Limit Exceeded (TLE)" });
-                return resolve({ status: "error", output: stderr || error.message });
+        proc.stderr.on('data', (d) => { stderr += d.toString(); });
+
+        proc.on('close', (code) => {
+            const execTime = Date.now() - startTime;
+
+            if (code === 124) {
+                return resolve({ status: 'error', output: 'Time limit exceeded', execTime });
+            }
+            if (code !== 0 && stderr && !stdout) {
+                return resolve({ status: 'error', output: stderr.trim(), execTime });
             }
 
-            resolve({ status: "success", output: stdout });
-        }); 
+            resolve({
+                status: code === 0 ? 'success' : 'error',
+                output: stdout.trim() || stderr.trim(),
+                execTime
+            });
+        });
+
+        proc.on('error', (err) => {
+            resolve({ status: 'error', output: err.message, execTime: Date.now() - startTime });
+        });
     });
-};
+}

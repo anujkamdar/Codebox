@@ -1,0 +1,12 @@
+services:
+  worker:
+    build: .
+    container_name: rce-worker
+    ports:
+      - "4000:4000"
+    environment:
+      - API_SECRET=${API_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/coderunner:/tmp/coderunner
+    restart: unless-stopped
