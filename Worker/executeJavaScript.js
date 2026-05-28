@@ -6,7 +6,7 @@ const TEMP_DIR = '/tmp/coderunner';
 const TIME_LIMIT = 10;
 const MEMORY_LIMIT = '512m';
 
-export async function executeJs(jobId, code, input = '') {
+export async function executeJavaScript(jobId, code, input = '') {
     const jobDir = path.join(TEMP_DIR, jobId);
 
     fs.mkdirSync(jobDir, { recursive: true });

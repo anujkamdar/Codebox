@@ -1,6 +1,6 @@
 import express from 'express';
 import { executeCpp } from './executeCpp.js';
-import { executeJavaScript } from './executeJavaScript.js';
+import {executeJavaScript} from './executeJavaScript.js';
 import { executePython } from './executePython.js';
 
 const app = express();
