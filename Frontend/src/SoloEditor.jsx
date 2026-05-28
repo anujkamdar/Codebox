@@ -16,7 +16,7 @@ const LANGUAGES = {
   cpp: {
     label: "C++", ext: "cpp", monacoLang: "cpp",
     accent: "#00bcd4", accentDark: "#0097a7", icon: "C++", iconBg: "#00599C",
-    starter: `// C++ — CompileBox\n#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    string line;\n    while (getline(cin, line)) {\n        reverse(line.begin(), line.end());\n        cout << line << "\\n";\n    }\n    return 0;\n}\n`,
+    starter: `// C++ — CompileBox\n#include <iostream>\n#include <algorithm>\n\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    string line;\n    while (getline(cin, line)) {\n        reverse(line.begin(), line.end());\n        cout << line << "\\n";\n    }\n    return 0;\n}\n`,
   },
 };
 
