@@ -180,7 +180,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4" style={{ background: "rgba(5,8,16,0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-md flex items-center justify-center text-sm font-bold" style={{ background: "#00ff88", color: "#050810" }}>{"<>"}</div>
-          <span className="syne font-bold text-lg tracking-tight">CodePulse</span>
+          <span className="syne font-bold text-lg tracking-tight">CompileBox</span>
         </div>
         <div className="hidden md:flex items-center gap-6 text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
           {["Docs", "Languages", "Examples", "Blog"].map(l => (
@@ -188,7 +188,7 @@ export default function LandingPage() {
           ))}
         </div>
         <div className="flex gap-3">
-          <Link to="/editor" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">Solo Editor</Link>
+          <Link to="/soloeditor" className="btn-primary px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">Solo Editor</Link>
           <Link to="/join" className="btn-ghost px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 border" style={{ borderColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.7)" }}>Collaborate</Link>
         </div>
       </nav>
@@ -218,12 +218,12 @@ export default function LandingPage() {
 
           <p className="fadeup-2 text-lg md:text-xl mb-3" style={{ color: "rgba(255,255,255,0.45)", maxWidth: 520, margin: "0 auto 1.25rem" }}>
             A blazing-fast browser IDE with a real execution engine. Write{" "}
-            <TypewriterText phrases={["JavaScript", "Python", "Rust", "Go", "TypeScript", "C++"]} />{" "}
+            <TypewriterText phrases={["JavaScript", "Python", "C++"]} />{" "}
             and see results in milliseconds.
           </p>
 
           <div className="fadeup-3 flex flex-wrap items-center justify-center gap-3 mt-8">
-            <Link to="/editor" className="btn-primary px-7 py-3.5 rounded-xl text-sm font-bold transition-all duration-200" style={{ boxShadow: "0 0 30px rgba(0,255,136,0.25)" }}>
+            <Link to="/soloeditor" className="btn-primary px-7 py-3.5 rounded-xl text-sm font-bold transition-all duration-200" style={{ boxShadow: "0 0 30px rgba(0,255,136,0.25)" }}>
               Solo Editor
             </Link>
             <Link to="/join" className="btn-ghost px-7 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 border" style={{ borderColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.7)" }}>
@@ -269,7 +269,7 @@ export default function LandingPage() {
             No account. No install. No friction. Just a blank editor and your ideas.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link to="/editor" className="btn-primary inline-block px-10 py-4 rounded-xl text-base font-bold transition-all duration-200" style={{ boxShadow: "0 0 50px rgba(0,255,136,0.3)", animation: "pulse-border 2.5s ease-in-out infinite" }}>
+            <Link to="/soloeditor" className="btn-primary inline-block px-10 py-4 rounded-xl text-base font-bold transition-all duration-200" style={{ boxShadow: "0 0 50px rgba(0,255,136,0.3)", animation: "pulse-border 2.5s ease-in-out infinite" }}>
               Solo Editor
             </Link>
             <Link to="/join" className="btn-ghost inline-block px-10 py-4 rounded-xl text-base font-bold transition-all duration-200 border" style={{ borderColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.7)" }}>
@@ -283,9 +283,9 @@ export default function LandingPage() {
       <footer className="py-8 px-6 border-t text-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
         <div className="flex items-center justify-center gap-2 mb-3">
           <div className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold" style={{ background: "#00ff88", color: "#050810" }}>{"<>"}</div>
-          <span className="syne font-bold text-sm">CodePulse</span>
+          <span className="syne font-bold text-sm">CompileBox</span>
         </div>
-        <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>© 2026 CodePulse · Open source · No login required · Ever.</p>
+        <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>© 2026 CompileBox · Open source · No login required · Ever.</p>
       </footer>
     </div>
   );

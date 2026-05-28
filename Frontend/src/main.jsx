@@ -5,6 +5,7 @@ import MainPage from './MainPage.jsx'
 import JoinRoomPage from './JoinRoomPage.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './LandingPage.jsx'
+import SoloEditor from './SoloEditor.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/join",
     element: <JoinRoomPage/>
+  },
+  {
+    path: "/soloeditor",
+    element: <SoloEditor/>
   },
   {
     path: "/editor",
