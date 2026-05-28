@@ -16,7 +16,6 @@ const submitCode = asyncHandler(async (req, res) => {
   }
 
   const jobId = crypto.randomUUID();
-  console.log(`[API] Received Job: ${jobId}. Forwarding to Worker...`);
 
   const WORKER_URL = "http://worker:4000/execute";
 

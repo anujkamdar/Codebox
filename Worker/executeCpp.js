@@ -4,7 +4,7 @@ import path from 'path';
 
 const TEMP_DIR = '/tmp/coderunner';
 const TIME_LIMIT = 5;
-const MEMORY_LIMIT = '128m';
+const MEMORY_LIMIT = '512m';
 
 export async function executeCpp(jobId, code, input = '') {
     const jobDir = path.join(TEMP_DIR, jobId);
