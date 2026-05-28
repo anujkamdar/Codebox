@@ -3,14 +3,14 @@ import fs from 'fs';
 import path from 'path';
 
 const TEMP_DIR = '/tmp/coderunner';
-const TIME_LIMIT = 10;
+const TIME_LIMIT = 5;
 const MEMORY_LIMIT = '512m';
 
-export async function executeJs(jobId, code, input = '') {
+export async function executePython(jobId, code, input = '') {
     const jobDir = path.join(TEMP_DIR, jobId);
 
     fs.mkdirSync(jobDir, { recursive: true });
-    fs.writeFileSync(path.join(jobDir, 'main.js'), code);
+    fs.writeFileSync(path.join(jobDir, 'main.py'), code);
     fs.writeFileSync(path.join(jobDir, 'input.txt'), input);
 
     try {
@@ -25,16 +25,16 @@ function runInDocker(jobId, jobDir) {
         const startTime = Date.now();
         const proc = spawn('docker', [
             'run', '--rm',
-            '--name', `js-${jobId}`,
+            '--name', `py-${jobId}`,
             '--network', 'none',
             '--memory', MEMORY_LIMIT,
             '--cpus', '0.5',
             '--ulimit', 'nproc=50:50',
             '--ulimit', 'fsize=10000000',
             '-v', `${jobDir}:/code:ro`,
-            'node:20-alpine',
+            'python:3-alpine', // Using Alpine Linux for extremely fast spin-up
             '/bin/sh', '-c',
-            `timeout ${TIME_LIMIT} node /code/main.js < /code/input.txt`
+            `timeout ${TIME_LIMIT} python /code/main.py < /code/input.txt`
         ]);
 
         let stdout = '';
@@ -55,7 +55,7 @@ function runInDocker(jobId, jobDir) {
                 return resolve({ status: 'error', output: 'Time limit exceeded', execTime });
             }
             
-            // If the script crashed (syntax error, unhandled exception, etc.)
+            // If the script crashed (SyntaxError, IndentationError, etc.)
             if (code !== 0 && stderr && !stdout) {
                 return resolve({ status: 'error', output: stderr.trim(), execTime });
             }

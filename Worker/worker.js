@@ -1,6 +1,7 @@
 import express from 'express';
 import { executeCpp } from './executeCpp.js';
 import { executeJavaScript } from './executeJavaScript.js';
+import { executePython } from './executePython.js';
 
 const app = express();
 app.use(express.json());
@@ -15,7 +16,11 @@ app.post('/execute', async (req, res) => {
         }else if(language === 'javascript'){
             const result = await executeJavaScript(jobId, code, input);
             return res.status(200).json(result);
-        }else {
+        }else if(language === 'python'){
+            const result = await executePython(jobId, code, input);
+            return res.status(200).json(result);
+        }
+        else {
             return res.status(400).json({ status: "error", output: "Language not supported." });
         }
     } catch (error) {

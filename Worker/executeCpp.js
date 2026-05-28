@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 const TEMP_DIR = '/tmp/coderunner';
-const TIME_LIMIT = 5;
+const TIME_LIMIT = 10;
 const MEMORY_LIMIT = '512m';
 
 export async function executeCpp(jobId, code, input = '') {
