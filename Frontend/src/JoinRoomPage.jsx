@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
@@ -24,6 +25,15 @@ function JoinRoomPage() {
 
         navigate(`/editor?${params.toString()}`);
     };
+
+    return (
+        <div className="min-h-screen w-screen bg-[#1e1e1e] text-[#cccccc] flex items-center justify-center px-4"> 
+            Coming soon
+            Try out the solo editor in the meantime: <button className="ml-2 bg-[#007acc] hover:bg-[#005f9e] text-white px-4 py-2 rounded-sm text-sm font-medium transition-colors">
+                <Link to="/soloeditor">Solo Editor</Link>
+            </button>
+        </div>
+    )
 
     return (
         <div className="min-h-screen w-screen bg-[#1e1e1e] text-[#cccccc] flex items-center justify-center px-4">
