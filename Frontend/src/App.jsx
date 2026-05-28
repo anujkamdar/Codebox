@@ -5,9 +5,7 @@ import axios from 'axios';
 
 
 function App() {
-
   const value = `//hello from anuj and enjoy coding`;
-
   const [code, setCode] = useState("");
   const [input, setInput] = useState(""); 
   const [output, setOutput] = useState("");
